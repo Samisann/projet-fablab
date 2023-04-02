@@ -1,6 +1,9 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { HttpErrorByCode } from "@nestjs/common/utils/http-error-by-code.util";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
+import { Constants } from "src/utils/constant";
+import { UpdatePasswordDTO } from "../dto/updatePassword.dto";
 import { UserDTO } from "../dto/user.dto";
 import { User, UserDocument } from "../entities/user.model";
 
@@ -22,6 +25,34 @@ export class UserService{
 
     async findByUsername(email: string): Promise<User> {
         return this.model.findOne({ email }).exec();
+    }
+
+    async updatePassword(email: string, updatePasswordDTO : UpdatePasswordDTO ): Promise<User> {
+      const { oldPassword, ...rest } = updatePasswordDTO;
+
+      const user = this.model.findOne({ email }).exec();
+    //if the old password doesn't match the one in the database
+        if ((await user).password !== oldPassword) {
+            throw new HttpException('Wrong old password', HttpStatus.BAD_REQUEST);
+
+        }
+
+    // else if the new password is not the same in the confirm password field
+        else if (rest.newPassword !== rest.confirmPassword) {
+            throw new HttpException('New password and confirm password do not match', HttpStatus.BAD_REQUEST);
+        }
+        // if the length of the new password is less than 8 characters
+        else if (rest.newPassword.length < 8) {
+            throw new HttpException('New password must be at least 8 characters', HttpStatus.BAD_REQUEST);
+        }
+        // else return 201 for success
+        else {
+            return new this.model({
+                ...rest,
+                createdAt: new Date(),
+            }).save();
+            console.log('Password updated successfully');
+        }
     }
 
 }

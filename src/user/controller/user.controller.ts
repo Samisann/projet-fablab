@@ -1,7 +1,8 @@
-import { Body, Controller, HttpException, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
 import { Constants } from 'src/utils/constant';
 import { UserDTO } from '../dto/user.dto';
 import { UserService } from '../service/UserService';
+import { User } from '../entities/user.model';
 
 @Controller('v1/user')
 export class UserController {
@@ -19,4 +20,28 @@ export class UserController {
         }
         
     }
+
+
+    @Get()
+  async getUserInfo(@Body() userDTO: UserDTO): Promise<Pick<User, 'email' | 'nom' | 'prenom' | 'telephone'>> {
+    try {
+      const user = await this.userService.findByUsername(userDTO.email);
+
+      if (!user) {
+        throw new HttpException(Constants.USER_NOT_FOUND, HttpStatus.NOT_FOUND);
+      }
+
+      const { email, nom, prenom, telephone } = user;
+
+      return { email, nom, prenom, telephone };
+    } catch (e) {
+      throw new HttpException(Constants.SERVICE_UNAIVALAIBLE, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+
+    
+
 }
+
+

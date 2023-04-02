@@ -20,3 +20,11 @@ describe('AppController', () => {
     });
   });
 });
+function beforeEach(arg0: () => Promise<void>) {
+  throw new Error('Function not implemented.');
+}
+
+function expect(arg0: string) {
+  throw new Error('Function not implemented.');
+}
+

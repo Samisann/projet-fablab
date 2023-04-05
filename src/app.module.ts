@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { AuthController } from './auth/auth.controller';
+import { PasswordResetService } from './auth/service/password-reset.service';
 
 @Module({
   imports: [
@@ -11,6 +12,6 @@ import { AuthController } from './auth/auth.controller';
     UserModule
   ],
   controllers: [AppController, AuthController],
-  providers: [AppService],
+  providers: [AppService, PasswordResetService],
 })
 export class AppModule {}

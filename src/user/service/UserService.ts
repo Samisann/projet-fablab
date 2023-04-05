@@ -6,6 +6,7 @@ import { User, UserDocument } from "../entities/user.model";
 
 @Injectable()
 export class UserService{
+    user: any;
     constructor(
         @InjectModel(User.name) private readonly model: Model<UserDocument>,
       ) {}
@@ -20,8 +21,10 @@ export class UserService{
         }).save();
     }
 
+    
+
     async findByUsername(email: string): Promise<User> {
-        return this.model.findOne({ email }).exec();
-    }
+        return this.user.find(user => user.email === email);
+      }
 
 }

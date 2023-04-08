@@ -8,6 +8,7 @@ import { HobbiesService } from './hobbies/service/HobbiesService';
 import { hobbiesModule } from './hobbies/hobbies.module';
 
 
+
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb://localhost:27017/socialnetworks'),

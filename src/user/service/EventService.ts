@@ -15,6 +15,10 @@ export class EventService{
         return this.model.find().exec();
     }
 
+    async findByUsername(email: string): Promise<Event> {
+        return this.model.findOne({ email }).exec();
+    }
+
     async create(eventDTO: EventDTO): Promise<Event> {
         return await new this.model({
           ...eventDTO,

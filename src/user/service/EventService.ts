@@ -7,7 +7,7 @@ import { EventDTO } from "../dto/event.dto";
 import { Event, EventDocument } from "../entities/event.model";
 
 @Injectable()
-export class UserService{
+export class EventService{
     constructor(
         @InjectModel(Event.name) private readonly model: Model<EventDocument>,
       ) {}
@@ -15,5 +15,11 @@ export class UserService{
         return this.model.find().exec();
     }
 
+    async create(eventDTO: EventDTO): Promise<Event> {
+        return await new this.model({
+          ...eventDTO,
+          createdAt: new Date(),
+        }).save();
+    }
 
 }

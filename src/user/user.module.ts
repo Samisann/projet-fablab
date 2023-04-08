@@ -8,6 +8,6 @@ import { EventController } from './controller/event/event.controller';
 @Module({
     imports: [MongooseModule.forFeature([{ name: User.name, schema: UserSchema }])],
     providers:[UserService],
-    controllers: [UserController, EventController],
+    controllers: [UserController],
 })
 export class UserModule {}

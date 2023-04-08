@@ -12,5 +12,5 @@ export class EventDTO{
     @IsNotEmpty()
     lieu:string;
     @IsNotEmpty()
-    prix:string;
+    prix:number;
 }

@@ -12,6 +12,8 @@ const mongoose_1 = require("@nestjs/mongoose");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const user_module_1 = require("./user/user.module");
+const auth_controller_1 = require("./auth/auth.controller");
+const password_reset_service_1 = require("./auth/service/password-reset.service");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -20,8 +22,8 @@ AppModule = __decorate([
             mongoose_1.MongooseModule.forRoot('mongodb://localhost:27017/socialnetworks'),
             user_module_1.UserModule
         ],
-        controllers: [app_controller_1.AppController],
-        providers: [app_service_1.AppService],
+        controllers: [app_controller_1.AppController, auth_controller_1.AuthController],
+        providers: [app_service_1.AppService, password_reset_service_1.PasswordResetService],
     })
 ], AppModule);
 exports.AppModule = AppModule;

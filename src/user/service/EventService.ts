@@ -15,8 +15,8 @@ export class EventService{
         return this.model.find().exec();
     }
 
-    async findByUsername(email: string): Promise<Event> {
-        return this.model.findOne({ email }).exec();
+    async findByUsername(nom: string): Promise<Event> {
+        return this.model.findOne({ nom }).exec();
     }
 
     async create(eventDTO: EventDTO): Promise<Event> {
@@ -25,5 +25,8 @@ export class EventService{
           createdAt: new Date(),
         }).save();
     }
+    async delete(id: string): Promise<void> {
+        await this.model.findByIdAndDelete(id);
+      }
 
 }

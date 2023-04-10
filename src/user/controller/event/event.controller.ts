@@ -1,13 +1,17 @@
-import { Controller, Post, Body} from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Delete} from '@nestjs/common';
 import { EventService } from '../../service/EventService';
 import { EventDTO } from '../../dto/event.dto';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { Constants } from 'src/utils/constant';
+import { eventNames } from 'process';
+import { User } from 'src/user/entities/user.model';
+import { UserService } from 'src/user/service/UserService';
 
 
 @Controller('event')
 export class EventController {
-    constructor(private readonly EventService: EventService) {}
+    constructor(private readonly EventService: EventService,
+        private readonly userService: UserService,) {}
 
     @Post()
     async create(@Body() EventDTO: EventDTO) {
@@ -42,4 +46,45 @@ export class EventController {
             throw new HttpException(Constants.SERVICE_UNAIVALAIBLE, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @Get()
+  async getEventInfo(@Body() EventDTO: EventDTO): Promise<Event> {
+    try {
+      const event = await this.EventService.findByUsername(EventDTO.nom);
+
+      if (!event) {
+        throw new HttpException(Constants.EVENT_NOT_FOUND, HttpStatus.NOT_FOUND);
+      }
+
+      const { nom, date, lieu, prix } = event;
+
+      return { nom, date, lieu, prix };
+    } catch (e) {
+      throw new HttpException(Constants.SERVICE_UNAIVALAIBLE, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  @Delete(':email/event/:id')
+  async deleteEvent(
+    @Param('email') email: string,
+    @Param('id') id: string,
+  ): Promise<string> {
+    const user: User = await this.userService.findByUsername(email);
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+
+    const event: Event = await this.EventService.findByUsername(id);
+    if (!event) {
+      throw new HttpException('Event not found', HttpStatus.NOT_FOUND);
+    }
+
+    if (event.creator.toString() !== user._id.toString()) {
+      throw new HttpException('Unauthorized', HttpStatus.FORBIDDEN);
+    }
+
+    await this.EventService.delete(id);
+    return 'Event deleted successfully';
+  }
 }
+

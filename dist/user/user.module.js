@@ -12,12 +12,13 @@ const mongoose_1 = require("@nestjs/mongoose");
 const user_model_1 = require("./entities/user.model");
 const user_controller_1 = require("./controller/user.controller");
 const UserService_1 = require("./service/UserService");
+const password_reset_service_1 = require("../auth/service/password-reset.service");
 let UserModule = class UserModule {
 };
 UserModule = __decorate([
     (0, common_1.Module)({
         imports: [mongoose_1.MongooseModule.forFeature([{ name: user_model_1.User.name, schema: user_model_1.UserSchema }])],
-        providers: [UserService_1.UserService],
+        providers: [UserService_1.UserService, password_reset_service_1.PasswordResetService],
         controllers: [user_controller_1.UserController],
     })
 ], UserModule);

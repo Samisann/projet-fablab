@@ -23,7 +23,7 @@ export class AuthController {
         throw new HttpException(Constants.USER_NOT_FOUND, HttpStatus.NOT_FOUND);
       }
       const resetLink = 'http://localhost:3000/reset-password';
-      await this.passwordResetService.sendResetEmail(userDTO.email, resetLink);
+      await this.passwordResetService.sendTempPasswordByEmail(userDTO.email);
       return { message: 'Email envoyé' };
       
     } catch (e) {

@@ -1,4 +1,7 @@
+import { UserService } from 'src/user/service/UserService';
 export declare class PasswordResetService {
+    private readonly userService;
     private transporter;
-    sendResetEmail(email: string, resetLink: string): Promise<void>;
+    constructor(userService: UserService);
+    sendTempPasswordByEmail(email: string): Promise<void>;
 }

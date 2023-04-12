@@ -1,26 +1,43 @@
 import { Injectable } from '@nestjs/common';
-import * as nodemailer from 'nodemailer';
+import { randomBytes } from 'crypto';
+import { promisify } from 'util';
+import { UserService } from 'src/user/service/UserService';
+import { createTransport } from 'nodemailer';
+import * as dotenv from 'dotenv';
 
 @Injectable()
 export class PasswordResetService {
-  private transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 587,
-    secure: false,
-    auth: {
-      user: 'connextu.webtech@gmail.com',
-      pass: 'Bonjour2023',
-    },
-  });
+  private transporter;
 
-  async sendResetEmail(email: string, resetLink: string) {
-    const mailOptions = {
-      from: 'connextu.webtech@gmail.com',
+  constructor( 
+    private readonly userService: UserService,
+    ) {
+      dotenv.config();
+      this.transporter = createTransport({
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false,
+        auth: {
+          user: process.env.MAILER_EMAIL,
+          pass: process.env.MAILER_PASSWORD,
+        },
+      });
+    }
+
+  async sendTempPasswordByEmail(email: string): Promise<void> {
+    
+    const tempPassword = (await promisify(randomBytes)(8)).toString('hex');
+
+    // Update the user's password with the temporary password
+    const user = await this.userService.findByUsername(email);
+    user.password = tempPassword;
+    
+
+    // Send the email to the user with the temporary password
+    await this.transporter.sendMail({
       to: email,
-      subject: 'Réinitialisation de mot de passe',
-      text: `Vous avez demandé la réinitialisation de votre mot de passe. Cliquez sur le lien suivant pour réinitialiser votre mot de passe : ${resetLink}`,
-    };
-    const info = await this.transporter.sendMail(mailOptions);
-    console.log(`Email envoyé : ${info.messageId}`);
+      subject: 'Votre mot de passe temporaire',
+      html: `Votre mot de passe temporaire est: <strong>${tempPassword}</strong>`,
+    });
   }
 }

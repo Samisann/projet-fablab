@@ -28,7 +28,7 @@ let UserService = class UserService {
         return await new this.model(Object.assign(Object.assign({}, userDTO), { createdAt: new Date() })).save();
     }
     async findByUsername(email) {
-        return this.user.find(user => user.email === email);
+        return this.model.findOne({ email }).exec();
     }
 };
 UserService = __decorate([

@@ -5,11 +5,11 @@ import { HttpException, HttpStatus } from '@nestjs/common';
 import { Constants } from 'src/utils/constant';
 
 
-@Controller('event')
+@Controller('v1/user')
 export class EventController {
     constructor(private readonly EventService: EventService) {}
 
-    @Post()
+    @Post("event")
     async create(@Body() EventDTO: EventDTO) {
         const email = await this.EventService.findByUsername(EventDTO.email);
         if(!email){
@@ -28,12 +28,7 @@ export class EventController {
             throw new HttpException("Le champ lieu est requis", HttpStatus.BAD_REQUEST);
         }else if(EventDTO.prix && isNaN(EventDTO.prix)){
             throw new HttpException("Le champ prix doit être un nombre", HttpStatus.BAD_REQUEST);
-        }else 
-        {
-            //service indisponible
-            throw new HttpException(Constants.SERVICE_UNAIVALAIBLE, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
    
         try{
           

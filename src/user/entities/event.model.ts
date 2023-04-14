@@ -7,6 +7,8 @@ export type EventDocument = HydratedDocument<Event>;
 @Schema({collection:'events'})
 export class Event{
     @Prop({required:true,unique:true})
+    email: string;
+    @Prop({required:true,unique:true})
     nom: string;
     @Prop({required:true})
     description: string;

@@ -1,3 +1,4 @@
+import { Type } from "class-transformer";
 import { IsEmail, IsNotEmpty } from "class-validator"
 
 export class EventDTO{
@@ -9,8 +10,17 @@ export class EventDTO{
     description: string;
     @IsNotEmpty()
     date:string;
+    
+    @Type(() => Object)
     @IsNotEmpty()
-    lieu:string;
+    lieu:{
+        lat:string;
+        long:string;
+    }
     @IsNotEmpty()
     prix:number;
+    @IsNotEmpty()
+    hobbies:{
+        id:string;
+        label:string}[];
 }

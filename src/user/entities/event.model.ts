@@ -14,12 +14,14 @@ export class Event{
     description: string;
     @Prop({required:true})
     date:string;
+    @Prop({required:true, type: mongoose.Schema.Types.Mixed})
+    lieu:{
+        lat:string;
+        long:string;
+    }
     @Prop({required:true})
-    lieu:string;
-    @Prop({required:true})
-    prix:string;
-    @Prop({ required: true })
-    createdAt: Date;
+    prix:number;
+
 }
 
 export const EventSchema = SchemaFactory.createForClass(Event);

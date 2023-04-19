@@ -20,10 +20,13 @@ export class EventService{
     }
 
     async create(eventDTO: EventDTO): Promise<Event> {
-        return await new this.model({
-          ...eventDTO,
-          createdAt: new Date(),
-        }).save();
+        const event = new this.model({
+            ...eventDTO,
+            createdAt: new Date(),
+          });
+          event.lieu = eventDTO.lieu;
+          return await event.save();
+
     }
 
 }

@@ -26,6 +26,9 @@ export class Event{
         id:string;
         label:string}[];
 
+    @Prop({required:true, unique:true})
+    eventId:number;
+
 }
 
 export const EventSchema = SchemaFactory.createForClass(Event);

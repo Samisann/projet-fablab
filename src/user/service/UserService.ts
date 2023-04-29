@@ -6,6 +6,8 @@ import { Constants } from "src/utils/constant";
 import { UpdatePasswordDTO } from "../dto/updatePassword.dto";
 import { UserDTO } from "../dto/user.dto";
 import { User, UserDocument } from "../entities/user.model";
+import { randomBytes } from 'crypto';
+import { promisify } from 'util';
 
 @Injectable()
 export class UserService{
@@ -56,4 +58,22 @@ export class UserService{
         }
     }
 
+    async updateAfterReset(email: string, userDTO: UserDTO): Promise<User> {
+        const tempPassword = (await promisify(randomBytes)(8)).toString('hex');
+      
+        const user = await this.model.findOne({ email }).exec();
+      
+        if (!user) {
+          throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+        }
+      
+        const update = {
+          password: userDTO.password,
+          tempPassword: tempPassword
+        };
+      
+        return this.model.findOneAndUpdate({ email: email }, update, { new: true }).exec();
+      }
+      
+  
 }

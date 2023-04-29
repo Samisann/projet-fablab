@@ -1,4 +1,4 @@
-import { Controller, Post, Body} from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Query, Delete} from '@nestjs/common';
 import { EventService } from '../../service/EventService';
 import { EventDTO } from '../../dto/event.dto';
 import { HttpException, HttpStatus } from '@nestjs/common';
@@ -47,4 +47,25 @@ export class EventController {
             throw new HttpException(Constants.SERVICE_UNAIVALAIBLE, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
+//     @Get('/hobbies')
+//   async findByHobbies(@Query('email') email: string, @Query('hobbies') hobbies: string[]): Promise<Event[]> {
+//     return await this.EventService.findByHobbies(email, hobbies);
+//   }
+
+
+  @Delete(':id')
+async delete(@Param('id') id: string, @Body('email') email: string) {
+  const event = await this.EventService.findById(id);
+  if (!event) {
+    throw new HttpException('L evenement n existe pas', HttpStatus.NOT_FOUND);
+  }
+  if (event.email !== email) {
+    throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+  }
+  await this.EventService.delete(id);
+  return { message: 'L evenement a ete correctement supprime' };
+}
+
 }

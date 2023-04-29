@@ -21,6 +21,10 @@ export class Event{
     }
     @Prop({required:true})
     prix:number;
+    @Prop({required:true})
+    hobbies:{
+        id:string;
+        label:string}[];
 
 }
 

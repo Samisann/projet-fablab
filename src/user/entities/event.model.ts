@@ -25,6 +25,12 @@ export class Event{
     @Prop({required:true, unique:true})
     eventId:number;
 
+    @Prop({required:true, unique:true})
+    hobbies:{
+        id:string;
+        label:string;
+    }[];
+
 }
 
 export const EventSchema = SchemaFactory.createForClass(Event);

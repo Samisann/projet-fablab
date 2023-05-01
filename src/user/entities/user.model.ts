@@ -17,5 +17,11 @@ export class User{
     password:string;
     @Prop({ required: true })
     createdAt: Date;
+
+    @Prop({required:true, unique:true})
+    hobbies:{
+        id:string;
+        label:string;
+    }[];
 }
 export const UserSchema = SchemaFactory.createForClass(User);

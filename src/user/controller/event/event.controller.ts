@@ -49,10 +49,10 @@ export class EventController {
     }
 
 
-//     @Get('/hobbies')
-//   async findByHobbies(@Query('email') email: string, @Query('hobbies') hobbies: string[]): Promise<Event[]> {
-//     return await this.EventService.findByHobbies(email, hobbies);
-//   }
+    @Get('/hobbies')
+  async findByHobbies(@Query('email') email: string, @Query('hobbies') hobbies: string[]): Promise<Event[]> {
+    return await this.EventService.findByHobbies(email, hobbies);
+  }
 
 
   @Delete(':id')

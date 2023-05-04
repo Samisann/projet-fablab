@@ -74,6 +74,15 @@ export class UserService{
       
         return this.model.findOneAndUpdate({ email: email }, update, { new: true }).exec();
       }
+
+
+      async getUserHobbies(email: string): Promise<string[]> {
+        const user = await this.model.findOne({ email }).exec();
+        if (!user) {
+          throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+        }
+        return user.hobbies.map((hobby) => hobby.id);
+      }
       
   
 }

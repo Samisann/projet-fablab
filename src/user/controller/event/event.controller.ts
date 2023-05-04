@@ -7,11 +7,14 @@ import * as HobbiesData from '../../../../db/v002';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Hobbies } from 'src/hobbies/entities/hobbies.model';
+import { Events } from 'src/user/entities/event.model';
+
 
 
 @Controller('v1/user')
 export class EventController {
-    constructor(private readonly EventService: EventService,@InjectModel('Hobbies') private readonly hobbyModel: Model<Hobbies>,) {}
+    constructor(private readonly EventService: EventService,
+      @InjectModel('Hobbies') private readonly hobbyModel: Model<Hobbies>,) {}
 
     @Post("event")
     async create(@Body() EventDTO: EventDTO) {
@@ -49,9 +52,14 @@ export class EventController {
     }
 
 
-    @Get('/hobbies')
-  async findByHobbies(@Query('email') email: string, @Query('hobbies') hobbies: string[]): Promise<Event[]> {
-    return await this.EventService.findByHobbies(email, hobbies);
+    // @Get('user/:email')
+    // async findEventsByUserHobbies(@Param('email') email: string): Promise<Event[]> {
+    //   return this.EventService.findEventsByUserHobbies(email);
+    // }
+
+    @Get(':email')
+  async findByUserHobbies(@Param('email') email: string): Promise<Events[]> {
+    return this.EventService.getEventsByUserHobbies(email);
   }
 
 

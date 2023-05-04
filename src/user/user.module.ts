@@ -9,6 +9,7 @@ import { PasswordResetService } from './service/password-reset.service';
 @Module({
     imports: [MongooseModule.forFeature([{ name: User.name, schema: UserSchema }])],
     providers:[UserService, PasswordResetService],
+    exports: [UserService, PasswordResetService],
     controllers: [UserController,EventController],
 })
 export class UserModule {}

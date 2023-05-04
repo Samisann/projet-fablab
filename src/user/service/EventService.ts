@@ -5,7 +5,7 @@ import { randomBytes } from "crypto";
 import { Model } from "mongoose";
 import { Constants } from "src/utils/constant";
 import { EventDTO } from "../dto/event.dto";
-import { Event, EventDocument } from "../entities/event.model";
+import { Events, EventDocument } from "../entities/event.model";
 import { UserService } from '../service/UserService';
 import { Hobbies } from "src/hobbies/entities/hobbies.model";
 import { User, UserDocument } from "../entities/user.model";
@@ -13,18 +13,18 @@ import { User, UserDocument } from "../entities/user.model";
 @Injectable()
 export class EventService{
     constructor(
-        @InjectModel(Event.name) private readonly model: Model<EventDocument>,
+        @InjectModel(Events.name) private readonly model: Model<EventDocument>,
         private readonly userService: UserService,
-        @InjectModel(Event.name) private readonly eventModel: Model<EventDocument>,
+        @InjectModel(Events.name) private readonly eventModel: Model<EventDocument>,
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
   
 
       ) {}
-    async findAll():Promise<Event[]>{
+    async findAll():Promise<Events[]>{
         return this.model.find().exec();
     }
 
-    async findByUsername(email: string): Promise<Event> {
+    async findByUsername(email: string): Promise<Events> {
         return this.model.findOne({ email }).exec();
     }
 
@@ -33,7 +33,7 @@ export class EventService{
         return parseInt(id, 16);
         }
 
-    async create(eventDTO: EventDTO): Promise<Event> {
+    async create(eventDTO: EventDTO): Promise<Events> {
         const event = new this.model({
             ...eventDTO,
             eventId: await this.generateId(),
@@ -44,25 +44,47 @@ export class EventService{
 
     }
 
-    async findEventsByUserHobbies(userId: string): Promise<Event[]> {
-      // Récupérer les hobbies de l'utilisateur
-      const user = await this.userModel.findById(userId).populate('hobbies').exec();
-      const userHobbies = user.hobbies.map((hobby) => hobby.id);
-  
-      // Récupérer les événements qui ont les mêmes hobbies que l'utilisateur
-      const events = await this.eventModel.find({ hobbies: { $in: userHobbies } }).exec();
-  
-      return events;
-    }
+    
+  // async findEventsByUserHobbies(email: string): Promise<Event[]> {
+  //   // Step 1: Retrieve user by email
+  //   const user = await this.userModel.findOne({ email }).exec();
+  //   if (!user) {
+  //     throw new Error('User not found');
+  //   }
 
-    async findById(id: string): Promise<Event> {
-      return this.model.findById(id).exec();
-    }
+   
+  //   const userHobbies = user.hobbies.map((hobby) => hobby.id);
+
+    
+  //   const events = await this.eventModel.find().exec();
+
+    
+  //   const filteredEvents = events.filter((event) =>
+  //     event.hobbies.some((hobby) => userHobbies.includes(hobby.id)),
+  //   );
+
+  //   return filteredEvents;
+  // }
+
+  async findById(id: string): Promise<Events> {
+    return this.model.findById(id).exec();
+  }
+  
     
     async delete(id: string): Promise<any> {
       return this.model.deleteOne({ _id: id }).exec();
     }
     
+   
+    async getEventsByUserHobbies(email: string): Promise<Events[]> {
+      const userHobbies = await this.userService.getUserHobbies(email);
+      const events = await this.eventModel.find().populate('hobbies').exec();
+      const filteredEvents: Events[] = events.filter(event => {
+        const eventHobbies = event.hobbies.map(hobby => hobby.id);
+        return userHobbies.some(hobby => eventHobbies.includes(hobby));
+      });
+      return filteredEvents;
+    }
     
     
 

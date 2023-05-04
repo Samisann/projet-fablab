@@ -21,13 +21,15 @@ export class Events{
     }
     @Prop({required:true})
     prix:number;
-    @Prop({required:true})
-    hobbies:{
-        id:string;
-        label:string}[];
 
     @Prop({required:true, unique:true})
     eventId:number;
+
+    @Prop({required:true, unique:true})
+    hobbies:{
+        id:string;
+        label:string;
+    }[];
 
 }
 

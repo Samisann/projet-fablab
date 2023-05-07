@@ -83,6 +83,4 @@ export class UserService{
         }
         return user.hobbies.map((hobby) => hobby.id);
       }
-      
-  
 }

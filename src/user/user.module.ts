@@ -5,11 +5,12 @@ import { UserController } from './controller/user.controller';
 import { UserService } from './service/UserService';
 import { EventController } from './controller/event/event.controller';
 import { PasswordResetService } from './service/password-reset.service';
+import { EventSchema } from './entities/event.model';
 
 @Module({
     imports: [MongooseModule.forFeature([{ name: User.name, schema: UserSchema }])],
     providers:[UserService, PasswordResetService],
-    exports: [UserService, PasswordResetService],
-    controllers: [UserController,EventController],
+    exports: [UserService],
+    controllers: [UserController],
 })
 export class UserModule {}

@@ -9,4 +9,6 @@ export class UserDTO{
     prenom:string;
     @IsNotEmpty()
     telephone:string;
+    @IsNotEmpty()
+    imageUrl:string;
 }

@@ -24,7 +24,8 @@ export class EventService{
         const id = randomBytes(8).toString('hex');
         return parseInt(id, 16);
         }
-
+    
+   
     async create(eventDTO: EventDTO): Promise<Event> {
         const event = new this.model({
             ...eventDTO,

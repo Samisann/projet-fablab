@@ -23,5 +23,9 @@ export class User{
         id:string;
         label:string;
     }[];
+
+    @Prop({required:false, unique:true})
+    imageUrl:string;
+    
 }
 export const UserSchema = SchemaFactory.createForClass(User);

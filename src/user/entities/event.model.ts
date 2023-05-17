@@ -31,6 +31,11 @@ export class Event{
         label:string;
     }[];
 
+    @Prop({required:false, unique:true})
+    imageUrl:string;
+
+    
+
 }
 
 export const EventSchema = SchemaFactory.createForClass(Event);

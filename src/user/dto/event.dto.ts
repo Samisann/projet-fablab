@@ -24,5 +24,9 @@ export class EventDTO{
         id:string;
         label:string}[];
 
+    @IsNotEmpty()
+    imageUrl:string;
+    
+
 
 }

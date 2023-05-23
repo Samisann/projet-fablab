@@ -23,6 +23,6 @@ export class EventDTO{
     hobbies:{
         id:string;
         label:string}[];
-
+        
 
 }

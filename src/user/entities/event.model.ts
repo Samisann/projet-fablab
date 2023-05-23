@@ -2,10 +2,10 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import mongoose, { HydratedDocument } from "mongoose";
 
-export type EventDocument = HydratedDocument<Events>;
+export type EventDocument = HydratedDocument<Event>;
 
-@Schema({collection:'events'})
-export class Events{
+@Schema({collection:'event'})
+export class Event{
     @Prop({required:true,unique:true})
     email: string;
     @Prop({required:true,unique:true})

@@ -17,5 +17,15 @@ export class User{
     password:string;
     @Prop({ required: true })
     createdAt: Date;
+
+    @Prop({required:false, unique:true}) // remettre required true après test
+    hobbies:{
+        id:string;
+        label:string;
+    }[];
+
+    @Prop({required:false, unique:true})
+    imageUrl:string;
+    
 }
 export const UserSchema = SchemaFactory.createForClass(User);

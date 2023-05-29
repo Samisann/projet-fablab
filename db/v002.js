@@ -15,33 +15,37 @@ db.createCollection("hobbies", {
     },
   },
 });
-db.hobbies.insertMany([
-  { label: "Cuisine" },
-  { label: "Couture" },
-  { label: "Cyclisme" },
-  { label: "Danse" },
 
-  { label: "Dessin" },
 
-  { label: "Gastronomie" },
-  { label: "Restaurant" },
-  { label: "Bar" },
-  { label: "Café" },
+ db.hobbies.insertMany([
+  { id: 1, label: "Cuisine" },
+  { id: 2, label: "Couture" },
+  { id: 3, label: "Cyclisme" },
+  { id: 4, label: "Danse" },
 
-  { label: "Jardinage" },
-  { label: "Jeux de société" },
-  { label: "Jeux vidéo" },
-  { label: "Lecture" },
+  { id: 5, label: "Dessin" },
 
-  { label: "Musique" },
-  { label: "Peinture" },
-  { label: "Photographie" },
-  { label: "Robotique" },
-  { label: "Sciences" },
-  { label: "Sport" },
-  { label: "Voyage" },
-  { label: "Yoga" },
-  { label: "Autre" },
+  { id: 6, label: "Gastronomie" },
+  { id: 7, label: "Restaurant" },
+  { id: 8, label: "Bar" },
+  { id: 9, label: "Café" },
+
+  { id: 10, label: "Jardinage" },
+  { id: 11, label: "Jeux de société" },
+  { id: 12, label: "Jeux vidéo" },
+  { id: 13, label: "Lecture" },
+
+  { id: 14, label: "Musique" },
+  { id: 15, label: "Peinture" },
+  { id: 16, label: "Photographie" },
+  { id: 17, label: "Robotique" },
+  { id: 18, label: "Sciences" },
+  { id: 19, label: "Sport" },
+  { id: 20, label: "Voyage" },
+  { id: 21, label: "Yoga" },
+  { id: 22, label: "Autre" },
 ]);
+
+
 
 db.hobbies.createIndex({ label: 1 }, { unique: true });

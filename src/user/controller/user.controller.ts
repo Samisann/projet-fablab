@@ -38,6 +38,10 @@ export class UserController {
    
   }
 
+  @Get("/hobbies")
+// get the hobbies from the hobbies collection
+  
+
    @Post('password')
    async updatePassword(@Body() updatePasswordDTO : UpdatePasswordDTO) {
             const user =this.userService.findByUsername(updatePasswordDTO.email);

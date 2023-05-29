@@ -18,7 +18,7 @@ export class User{
     @Prop({ required: true })
     createdAt: Date;
 
-    @Prop({required:true, unique:true})
+    @Prop({required:false, unique:true}) // remettre required true après test
     hobbies:{
         id:string;
         label:string;

@@ -1,4 +1,4 @@
-import { Body, Controller, HttpException, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Post } from '@nestjs/common';
 import { Constants } from 'src/utils/constant';
 import { HobbiesDTO } from '../dto/hobbies.dto';
 import { Hobbies } from '../entities/hobbies.model';
@@ -9,6 +9,15 @@ import { HobbiesService } from '../service/HobbiesService';
 @Controller('hobbies')
 export class HobbiesController {
     constructor(private readonly HobbiesService: HobbiesService) {}
+
+    @Get()
+    async findAll(): Promise<Hobbies[]> {
+        try{
+            return await this.HobbiesService.findAll();
+        }catch (e) {
+            throw new HttpException(Constants.SERVICE_UNAIVALAIBLE, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @Post()
     async create(@Body() HobbiesDTO: HobbiesDTO) {
         try{

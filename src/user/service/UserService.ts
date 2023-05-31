@@ -74,6 +74,11 @@ export class UserService{
       
         return this.model.findOneAndUpdate({ email: email }, update, { new: true }).exec();
       }
+
+      // retrieve hobbies
+        async findAllHobbies(): Promise<User[]> {
+            return this.model.find().populate('hobbies').exec();
+        }
       
   
 }

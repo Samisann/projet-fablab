@@ -15,7 +15,8 @@ import { hobbiesModule } from './hobbies/hobbies.module';
   imports: [
     MongooseModule.forRoot('mongodb://localhost:27017/socialnetworks'),
     UserModule,
-    EventModule
+    EventModule,
+    hobbiesModule,
    
   ],
   controllers: [AppController],

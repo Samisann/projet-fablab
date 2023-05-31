@@ -1,4 +1,4 @@
-import { Controller, Post, Body} from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Query, Delete, NotFoundException, UnauthorizedException, Req} from '@nestjs/common';
 import { EventService } from '../../service/EventService';
 import { EventDTO } from '../../dto/event.dto';
 import { HttpException, HttpStatus } from '@nestjs/common';
@@ -7,11 +7,22 @@ import * as HobbiesData from '../../../../db/v002';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Hobbies } from 'src/hobbies/entities/hobbies.model';
+import { Event } from 'src/user/entities/event.model';
+import { User } from 'src/user/entities/user.model';
+import { UseGuards } from '@nestjs/common';
+import { Request } from 'express';
+import { JwtService } from '@nestjs/jwt';
+import { Headers } from '@nestjs/common';
+
+
+
 
 
 @Controller('v1/user')
 export class EventController {
-    constructor(private readonly EventService: EventService,@InjectModel('Hobbies') private readonly hobbyModel: Model<Hobbies>,) {}
+    constructor(private readonly EventService: EventService,
+      @InjectModel('Hobbies') private readonly hobbyModel: Model<Hobbies>,
+      private readonly jwtService: JwtService) {}
 
     @Post("event")
     async create(@Body() EventDTO: EventDTO) {
@@ -47,4 +58,55 @@ export class EventController {
             throw new HttpException(Constants.SERVICE_UNAIVALAIBLE, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
+    // @Get('user/:email')
+    // async findEventsByUserHobbies(@Param('email') email: string): Promise<Event[]> {
+    //   return this.EventService.findEventsByUserHobbies(email);
+    // }
+
+    @Get('event/:email')
+  async findByUserHobbies(@Param('email') email: string): Promise<Event[]> {
+    return this.EventService.getEventsByUserHobbies(email);
+  }
+
+
+//   @Delete(':id')
+// async delete(@Param('id') id: string, @Body('email') email: string) {
+//   const event = await this.EventService.findById(id);
+//   if (!event) {
+//     throw new HttpException('L evenement n existe pas', HttpStatus.NOT_FOUND);
+//   }
+//   if (event.email !== email) {
+//     throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+//   }
+//   await this.EventService.delete(id);
+//   return { message: 'L evenement a ete correctement supprime' };
+// }
+// EventController
+
+@Delete(':eventId')
+  //@UseGuards(AuthGuard('jwt'))
+  async deleteEventById(
+    @Param('eventId') eventId: number,
+    @Param('email') userEmail: string,
+  ) {
+    const deletedEvent = await this.EventService.deleteEventById(
+      eventId,
+      userEmail,
+    );
+
+    if (!deletedEvent) {
+      throw new NotFoundException('Event not found');
+    }
+
+    return { deletedEvent, message: 'Event deleted successfully' };
+  }
+
+
+
+
+
+
+
 }

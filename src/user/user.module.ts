@@ -10,6 +10,7 @@ import { EventSchema } from './entities/event.model';
 @Module({
     imports: [MongooseModule.forFeature([{ name: User.name, schema: UserSchema }])],
     providers:[UserService, PasswordResetService],
+    exports: [UserService],
     controllers: [UserController],
 })
 export class UserModule {}

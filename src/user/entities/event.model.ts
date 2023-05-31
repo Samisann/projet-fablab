@@ -4,7 +4,7 @@ import mongoose, { HydratedDocument } from "mongoose";
 
 export type EventDocument = HydratedDocument<Event>;
 
-@Schema({collection:'events'})
+@Schema({collection:'event'})
 export class Event{
     @Prop({required:true,unique:true})
     email: string;

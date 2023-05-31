@@ -11,4 +11,8 @@ export class UserDTO{
     password:string;
     @IsNotEmpty()
     telephone:string;
+    @IsNotEmpty()
+    hobbies:{
+        id:string;
+        label:string}[];
 }

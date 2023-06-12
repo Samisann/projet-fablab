@@ -7,6 +7,9 @@ import { UserModule } from './user/user.module';
 import { HobbiesController } from './hobbies/controller/hobbies.controller';
 import { HobbiesService } from './hobbies/service/HobbiesService';
 import { hobbiesModule } from './hobbies/hobbies.module';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthGuard } from './user/service/AuthGuard';
+import { AuthService } from './user/service/AuthService';
 
 
 
@@ -20,6 +23,9 @@ import { hobbiesModule } from './hobbies/hobbies.module';
    
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService,AuthService,{
+    provide: APP_GUARD,
+    useClass: AuthGuard,
+  }],
 })
 export class AppModule {}

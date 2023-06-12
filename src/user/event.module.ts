@@ -7,13 +7,14 @@ import { Hobbies, HobbiesSchema } from 'src/hobbies/entities/hobbies.model';
 import { UserService } from './service/UserService';
 import { User, UserSchema } from './entities/user.model';
 import { JwtService } from '@nestjs/jwt';
+import { RetrieveTokenJwtService } from './service/RetrieveTokenJwt';
 
 @Module({
     imports: [   MongooseModule.forFeature([{ name: Event.name, schema: EventSchema }]),
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     MongooseModule.forFeature([{ name: Hobbies.name, schema: HobbiesSchema }])
   ],
-    providers:[EventService, UserService, JwtService],
+    providers:[EventService, UserService, JwtService,RetrieveTokenJwtService],
     controllers: [EventController],
 })
 export class EventModule {}

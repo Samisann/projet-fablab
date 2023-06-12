@@ -3,4 +3,6 @@ export class Constants {
     public static readonly EXISTING_USER = "Existing user";
     public static readonly EXISTING_LABEL = "Existing label";
     public static readonly USER_NOT_FOUND= 'User not found';
+    public static readonly secret= 'secret-my';
+
 }

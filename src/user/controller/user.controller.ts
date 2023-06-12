@@ -7,6 +7,7 @@ import { User } from '../entities/user.model';
 import {ApiParam} from '@nestjs/swagger';
 import { PasswordResetService } from '../service/password-reset.service';
 import { PasswordForgotDTO } from '../dto/passwordForgot.dto';
+import {Public} from '../../utils/security-annotation';
 
 
 @Controller('v1/user')

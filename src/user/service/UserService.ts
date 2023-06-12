@@ -87,6 +87,6 @@ export class UserService{
         if (!user) {
           throw new HttpException('User not found', HttpStatus.NOT_FOUND);
         }
-        return user.hobbies.map((hobby) => hobby.id);
+        return user.hobbies.map((hobby) => hobby);
       }
 }

@@ -14,5 +14,6 @@ export class UserDTO{
     @IsNotEmpty()
     hobbies:{
         id:string;
-        label:string}[];
+        label:string
+    }[];
 }

@@ -25,9 +25,7 @@ export class EventService{
         return this.model.find().exec();
     }
 
-    async findByUsername(email: string): Promise<Event> {
-        return this.model.findOne({ email }).exec();
-    }
+    
 
     async generateId(): Promise<number> {
         const id = randomBytes(8).toString('hex');
@@ -88,12 +86,13 @@ export class EventService{
 async deleteEventById(eventId: number, userEmail: string): Promise<Event> {
   // Vérification de l'existence de l'événement
   const event = await this.model.findOne({ eventId }).exec();
+  const user = this.userService.findByUsername(userEmail);
   if (!event) {
     throw new NotFoundException('Event not found');
   }
 
   // Vérification de l'e-mail de l'utilisateur
-  if (event.email !== userEmail) {
+  if (event.userId !== (await user)._id) {
     throw new UnauthorizedException("You don't have permission to delete this event");
   }
 

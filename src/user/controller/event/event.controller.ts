@@ -13,6 +13,9 @@ import { UseGuards } from '@nestjs/common';
 import { Request } from 'express';
 import { JwtService } from '@nestjs/jwt';
 import { Headers } from '@nestjs/common';
+import { JwtDTO } from 'src/user/dto/jwt.dto';
+import { RetrieveTokenJwtService } from 'src/user/service/RetrieveTokenJwt';
+import { UserService } from 'src/user/service/UserService';
 
 
 
@@ -21,28 +24,31 @@ import { Headers } from '@nestjs/common';
 @Controller('v1/user')
 export class EventController {
     constructor(private readonly EventService: EventService,
+      private readonly userService: UserService,
       @InjectModel('Hobbies') private readonly hobbyModel: Model<Hobbies>,
-      private readonly jwtService: JwtService) {}
+      private retrieveTokenJwtService:RetrieveTokenJwtService) {}
 
     @Post("event")
-    async create(@Body() EventDTO: EventDTO) {
-        const email = await this.EventService.findByUsername(EventDTO.email);
+    async create(@Body() eventDTO: EventDTO,@Req() request: Request) {
+        const decodedToken:JwtDTO = this.retrieveTokenJwtService.decodeToken(request);
+        console.log(decodedToken.username);
+        const user = await this.userService.findByUsername(decodedToken.username);
             
-         if(!EventDTO.nom){
+         if(!eventDTO.nom){
             throw new HttpException("Le champ nom est requis", HttpStatus.BAD_REQUEST);
         }
-        else if(!EventDTO.description){
+        else if(!eventDTO.description){
             throw new HttpException("Le champ description est requis", HttpStatus.BAD_REQUEST);
         }
-        else if(!EventDTO.date){
+        else if(!eventDTO.date){
             throw new HttpException("Le champ date est requis", HttpStatus.BAD_REQUEST);
         }
-        else if(!EventDTO.lieu){
+        else if(!eventDTO.lieu){
             throw new HttpException("Le champ lieu est requis", HttpStatus.BAD_REQUEST);
-        }else if(EventDTO.prix && isNaN(EventDTO.prix)){
+        }else if(eventDTO.prix && isNaN(eventDTO.prix)){
             throw new HttpException("Le champ prix doit être un nombre", HttpStatus.BAD_REQUEST);
-        }else if(EventDTO.hobbies && EventDTO.hobbies.length > 0){  
-            const hobbiesLabel = EventDTO.hobbies.map(hobby => hobby.label);
+        }else if(eventDTO.hobbies && eventDTO.hobbies.length > 0){  
+            const hobbiesLabel = eventDTO.hobbies.map(hobby => hobby.label);
             const hobbies = await this.hobbyModel.find({label: {$in: hobbiesLabel}});
             const notFoundHobbies = hobbiesLabel.filter(hobby => !hobbies.find(hobbyFound => hobbyFound.label === hobby));
             if(notFoundHobbies.length > 0){
@@ -52,7 +58,8 @@ export class EventController {
         
    
         try{
-            return await this.EventService.create(EventDTO);
+            eventDTO.userId = user._id;
+            return await this.EventService.create(eventDTO);
         }catch (e) {
             console.log(e);
             throw new HttpException(Constants.SERVICE_UNAIVALAIBLE, HttpStatus.INTERNAL_SERVER_ERROR);

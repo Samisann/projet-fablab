@@ -1,9 +1,9 @@
 import { Type } from "class-transformer";
-import { IsEmail, IsNotEmpty } from "class-validator"
+import { IsNotEmpty } from "class-validator"
+import mongoose from "mongoose";
 
 export class EventDTO{
-    @IsEmail()
-    email: string;
+    userId: mongoose.Schema.Types.ObjectId;
     @IsNotEmpty()
     nom: string;
     @IsNotEmpty()

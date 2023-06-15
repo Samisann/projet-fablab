@@ -32,7 +32,7 @@ export class UserController {
   @ApiParam({ name: 'email', type: String })
   async getUserInfo(@Param() params): Promise<Pick<User, 'email' | 'nom' | 'prenom' | 'telephone'>> {
       const user = await this.userService.findByUsername(params.email);
-
+      console.log(user._id);
       if (!user) {
         throw new HttpException(Constants.USER_NOT_FOUND, HttpStatus.NOT_FOUND);
       }

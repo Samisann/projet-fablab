@@ -56,4 +56,38 @@ export class UserService{
         }
     }
 
+<<<<<<< Updated upstream
+=======
+    async updateAfterReset(email: string, userDTO: UserDTO): Promise<User> {
+        const tempPassword = (await promisify(randomBytes)(8)).toString('hex');
+      
+        const user = await this.model.findOne({ email }).exec();
+      
+        if (!user) {
+          throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+        }
+      
+        const update = {
+          password: userDTO.password,
+          tempPassword: tempPassword
+        };
+      
+        return this.model.findOneAndUpdate({ email: email }, update, { new: true }).exec();
+      }
+
+      // retrieve hobbies
+        async findAllHobbies(): Promise<User[]> {
+            return this.model.find().populate('hobbies').exec();
+        }
+      
+  
+
+      async getUserHobbies(email: string): Promise<string[]> {
+        const user = await this.model.findOne({ email }).exec();
+        if (!user) {
+          throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+        }
+        return user.hobbies.map((hobby) => hobby.toString());
+      }
+>>>>>>> Stashed changes
 }

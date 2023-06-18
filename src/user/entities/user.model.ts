@@ -18,6 +18,7 @@ export class User{
     @Prop({ required: true })
     createdAt: Date;
 
+<<<<<<< Updated upstream
     @Prop({required:false, unique:true}) // remettre required true après test
     hobbies:{
         id:string;
@@ -27,5 +28,9 @@ export class User{
     @Prop({required:false, unique:true})
     imageUrl:string;
     
+=======
+    @Prop({required:true, type: mongoose.Schema.Types.ObjectId, ref: 'hobbies'})
+    hobbies: mongoose.Schema.Types.ObjectId[];
+>>>>>>> Stashed changes
 }
 export const UserSchema = SchemaFactory.createForClass(User);

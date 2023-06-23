@@ -6,6 +6,7 @@ import { Request } from 'express';
 import { HobbiesService } from '../service/HobbiesService';
 import { JwtDTO } from 'src/user/dto/jwt.dto';
 import { RetrieveTokenJwtService } from 'src/user/service/RetrieveTokenJwt';
+import { Public } from 'src/utils/security-annotation';
 
 
 @Controller('hobbies')
@@ -13,9 +14,10 @@ export class HobbiesController {
     constructor(private readonly HobbiesService: HobbiesService,private retrieveTokenJwtService:RetrieveTokenJwtService) {}
 
     @Get()
+    @Public()
     async findAll(@Req() request: Request): Promise<Hobbies[]> {
-        const decodedToken:JwtDTO = this.retrieveTokenJwtService.decodeToken(request);
-        console.log(decodedToken.username);
+        //const decodedToken:JwtDTO = this.retrieveTokenJwtService.decodeToken(request);
+        //console.log(decodedToken.username);
         try{
             return await this.HobbiesService.findAll();
         }catch (e) {

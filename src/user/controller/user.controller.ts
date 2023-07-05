@@ -15,6 +15,7 @@ export class UserController {
     constructor(private readonly userService: UserService,
         private passwordResetService: PasswordResetService,) {}
     @Post()
+    @Public()
     async create(@Body() userDTO: UserDTO) {
         try{
             const user = await this.userService.findByUsername(userDTO.email);
@@ -54,9 +55,10 @@ export class UserController {
     }
 
     @Post('reset-password')
+    @Public()
     async sendPasswordResetEmail(@Body() passwordForgotDTO: PasswordForgotDTO) {
   
-     // try {
+      try {
         const user = await this.userService.findByUsername(passwordForgotDTO.email);
   
         if (!user) {
@@ -65,9 +67,9 @@ export class UserController {
         await this.passwordResetService.sendTempPasswordByEmail(passwordForgotDTO.email);
         return { message: 'Email envoyé' };
         
-    //   } catch (e) {
-    //     throw new HttpException(Constants.SERVICE_UNAIVALAIBLE, HttpStatus.INTERNAL_SERVER_ERROR);
-    //   }
+     } catch (e) {
+        throw new HttpException(Constants.SERVICE_UNAIVALAIBLE, HttpStatus.INTERNAL_SERVER_ERROR);
+      }
     }
 
 }

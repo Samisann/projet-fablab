@@ -16,7 +16,6 @@ export class EventService{
     constructor(
         @InjectModel(Event.name) private readonly model: Model<EventDocument>,
         private readonly userService: UserService,
-        @InjectModel(Event.name) private readonly eventModel: Model<EventDocument>,
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
   
 
@@ -44,6 +43,8 @@ export class EventService{
           return await event.save();
 
     }
+
+    
 
 
     
@@ -107,7 +108,7 @@ async deleteEventById(eventId: number, userEmail: string): Promise<Event> {
    
     async getEventsByUserHobbies(email: string): Promise<Event[]> {
       const userHobbies = await this.userService.getUserHobbies(email);
-      const events = await this.eventModel.find().populate('hobbies').exec();
+      const events = await this.model.find().populate('hobbies').exec();
       const filteredEvents: Event[] = events.filter(event => {
         const eventHobbies = event.hobbies.map(hobby => hobby.id);
         return userHobbies.some(hobby => eventHobbies.includes(hobby));

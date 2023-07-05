@@ -13,7 +13,8 @@ import { UseGuards } from '@nestjs/common';
 import { Request } from 'express';
 import { JwtService } from '@nestjs/jwt';
 import { Headers } from '@nestjs/common';
-
+import { GeoLocationService } from 'src/user/service/geolocation.service';
+import { Public } from 'src/utils/security-annotation';
 
 
 
@@ -22,6 +23,7 @@ import { Headers } from '@nestjs/common';
 export class EventController {
     constructor(private readonly EventService: EventService,
       @InjectModel('Hobbies') private readonly hobbyModel: Model<Hobbies>,
+      private readonly geoLocationService: GeoLocationService,
       private readonly jwtService: JwtService) {}
 
     @Post("event")
@@ -51,12 +53,12 @@ export class EventController {
         }
         
    
-        try{
+        // try{
             return await this.EventService.create(EventDTO);
-        }catch (e) {
-            console.log(e);
-            throw new HttpException(Constants.SERVICE_UNAIVALAIBLE, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        // }catch (e) {
+        //     console.log(e);
+        //     throw new HttpException(Constants.SERVICE_UNAIVALAIBLE, HttpStatus.INTERNAL_SERVER_ERROR);
+        // }
     }
 
 
@@ -70,6 +72,12 @@ export class EventController {
     return this.EventService.getEventsByUserHobbies(email);
   }
 
+
+  @Public()
+  @Get('allevent')
+  async getAllEvents(): Promise<Event[]> {
+    return this.EventService.findAll();
+  }
 
 //   @Delete(':id')
 // async delete(@Param('id') id: string, @Body('email') email: string) {
@@ -105,7 +113,11 @@ export class EventController {
 
 
 
-
+  @Get('address-to-coordinates/:address')
+  async getAddressCoordinates(@Param('address') address: string) {
+    const coordinates = await this.geoLocationService.getAddressCoordinates(address);
+    return coordinates;
+  }
 
 
 

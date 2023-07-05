@@ -1,8 +1,9 @@
 
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import mongoose, { HydratedDocument } from "mongoose";
+import { Double } from "typeorm";
 
-export type EventDocument = HydratedDocument<Event>;
+export type EventDocument = Event & Document;
 
 @Schema({collection:'event'})
 export class Event{
@@ -32,5 +33,4 @@ export class Event{
     }[];
 
 }
-
 export const EventSchema = SchemaFactory.createForClass(Event);

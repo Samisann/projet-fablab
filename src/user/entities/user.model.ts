@@ -18,7 +18,7 @@ export class User{
     @Prop({ required: true })
     createdAt: Date;
 
-    @Prop({required:true, unique:true})
+    @Prop({required:true})
     hobbies:string[]
 }
 export const UserSchema = SchemaFactory.createForClass(User);

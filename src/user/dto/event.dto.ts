@@ -1,5 +1,6 @@
 import { Type } from "class-transformer";
 import { IsEmail, IsNotEmpty } from "class-validator"
+import { Double } from "typeorm";
 
 export class EventDTO{
     @IsEmail()
@@ -22,7 +23,8 @@ export class EventDTO{
     @IsNotEmpty()
     hobbies:{
         id:string;
-        label:string}[];
+        label:string
+    }[];
         
 
 }

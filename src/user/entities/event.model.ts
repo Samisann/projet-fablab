@@ -9,7 +9,7 @@ export type EventDocument = Event & Document;
 export class Event{
     @Prop({required:true,unique:true})
     email: string;
-    @Prop({required:true,unique:true})
+    @Prop({required:true})
     nom: string;
     @Prop({required:true})
     description: string;
@@ -26,11 +26,8 @@ export class Event{
     @Prop({required:true, unique:true})
     eventId:number;
 
-    @Prop({required:true, unique:true})
-    hobbies:{
-        id:string;
-        label:string;
-    }[];
+    @Prop({required:true})
+    hobbies:string[];
 
 }
 export const EventSchema = SchemaFactory.createForClass(Event);

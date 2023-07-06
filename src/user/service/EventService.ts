@@ -20,7 +20,7 @@ export class EventService{
   
 
       ) {}
-      async findAll():Promise<Event[]>{
+       findAll():Promise<Event[]>{
         return this.model.find().exec();
     }
 
@@ -110,7 +110,7 @@ async deleteEventById(eventId: number, userEmail: string): Promise<Event> {
       const userHobbies = await this.userService.getUserHobbies(email);
       const events = await this.model.find().populate('hobbies').exec();
       const filteredEvents: Event[] = events.filter(event => {
-        const eventHobbies = event.hobbies.map(hobby => hobby.id);
+        const eventHobbies = event.hobbies.map(hobby => hobby);
         return userHobbies.some(hobby => eventHobbies.includes(hobby));
       });
       return filteredEvents;
